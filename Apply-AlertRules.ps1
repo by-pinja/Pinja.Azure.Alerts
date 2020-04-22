@@ -1,23 +1,35 @@
 [CmdLetBinding(SupportsShouldProcess)]
 Param(
     [string][Parameter(Mandatory)]$ResourceGroup,
-    [PsCustomObject[]][Parameter(Mandatory)]$AlertRules
+    [PsCustomObject[]][Parameter(Mandatory)]$AlertRules,
+    [Parameter(Mandatory)]$ActionGroupReceiver,
+    [switch][Parameter()]$DisableAlerts
 )
 
 Set-StrictMode -Version Latest
 
 $resources = Get-AzResource -ResourceGroupName $ResourceGroup
 
-function SeverityAsInt([string]$Severity)
-{
+function SeverityAsInt([string]$Severity) {
     switch ($Severity) {
         "Critical" { return 0 }
         "Error" { return 1 }
         "Warning" { return 2 }
         "Information" { return 3 }
-        Default { throw "Invalid option for severity $Severity"}
+        Default { throw "Invalid option for severity $Severity" }
     }
 }
+
+$alertRef = Set-AzActionGroup `
+    -Name "azure-alerts" `
+    -ResourceGroup $ResourceGroup `
+    -ShortName "azure-alerts" `
+    -Receiver $ActionGroupReceiver `
+    -DisableGroup:$DisableAlerts `
+    -WarningAction SilentlyContinue
+
+# See https://github.com/Azure/azure-powershell/issues/9259 ...
+$alertRef = New-AzActionGroup -ActionGroupId $alertRef.Id
 
 function ResolveDescription([PsCustomObject]$mathingAlertRule, [PsCustomObject]$resource) {
     [System.Collections.ArrayList]$alertValidations = @()
@@ -35,26 +47,22 @@ function ResolveDescription([PsCustomObject]$mathingAlertRule, [PsCustomObject]$
     "$(if($alertFixSteps) {"Fix steps: $alertFixSteps"})"
 }
 
-function FormatCriteriaObject([Microsoft.Azure.Commands.Insights.OutputClasses.PSMetricCriteria] $criteriaToSimplify, $rule)
-{
+function FormatCriteriaObject([Microsoft.Azure.Commands.Insights.OutputClasses.PSMetricCriteria] $criteriaToSimplify, $rule) {
     return [PSCustomObject]@{
-        Metric = $criteriaToSimplify.MetricName
-        Threshold = $criteriaToSimplify.Threshold
+        Metric      = $criteriaToSimplify.MetricName
+        Threshold   = $criteriaToSimplify.Threshold
         Aggregation = $criteriaToSimplify.TimeAggregation
-        WindowSize = $rule.WindowSize
+        WindowSize  = $rule.WindowSize
     }
 }
 
-foreach($resource in $resources)
-{
+foreach ($resource in $resources) {
     Write-Verbose "Checking alert rules for resource $($resource.Id)"
 
     $matchingRules = $AlertRules | where { $_.ResourceType -eq $resource.ResourceType }
 
-    foreach($matchingRule in $matchingRules)
-    {
-        if(($matchingRule.PsObject.Properties -contains "Filter") )
-        {
+    foreach ($matchingRule in $matchingRules) {
+        if (($matchingRule.PsObject.Properties -contains "Filter") ) {
         }
 
         $fullName = "$($matchingRule.Name)-$($resource.Name -replace '/','-')"
@@ -66,27 +74,26 @@ foreach($resource in $resources)
         # This isn't ideal solution however (3>$null).
         $criteria = Invoke-Command -ScriptBlock $matchingRule.Criteria -InputObject $resource 3>$null
 
-        if($PSCmdlet.ShouldProcess($fullName,$resource.Id))
-        {
+        if ($PSCmdlet.ShouldProcess($fullName, $resource.Id)) {
             Add-AzMetricAlertRuleV2 `
-            -Name $fullName `
-            -ResourceGroupName $ResourceGroup `
-            -WindowSize $matchingRule.WindowSize `
-            -Frequency $matchingRule.Frequency `
-            -TargetResourceScope $resource.ResourceId `
-            -TargetResourceType $resource.ResourceType `
-            -TargetResourceRegion $resource.Location `
-            -Description $fullDescription `
-            -Severity $matchingRule.Severity `
-            -Condition $criteria `
-            -ActionGroup $alertRef | Out-Null
+                -Name $fullName `
+                -ResourceGroupName $ResourceGroup `
+                -WindowSize $matchingRule.WindowSize `
+                -Frequency $matchingRule.Frequency `
+                -TargetResourceScope $resource.ResourceId `
+                -TargetResourceType $resource.ResourceType `
+                -TargetResourceRegion $resource.Location `
+                -Description $fullDescription `
+                -Severity (SeverityAsInt $matchingRule.Severity) `
+                -Condition $criteria `
+                -ActionGroup $alertRef | Out-Null
         }
 
         [PsCustomObject]@{
-            Name = $fullName
-            Resource = $resource.Id
+            Name        = $fullName
+            Resource    = $resource.Id
             Description = $fullDescription
-            Criteria = FormatCriteriaObject $criteria $matchingRule
+            Criteria    = FormatCriteriaObject $criteria $matchingRule
         }
     }
 }
