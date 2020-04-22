@@ -6,58 +6,58 @@
 .EXAMPLE
    ConvertTo-Markdown($data)
 #>
-Function ConvertTo-Markdown {
-    [CmdletBinding()]
-    [OutputType([string])]
-    Param (
-        [Parameter(
-            Mandatory = $true,
-            Position = 0,
-            ValueFromPipeline = $true
-        )]
-        [PSObject[]]$collection
-    )
+[CmdletBinding()]
+[OutputType([string])]
+Param (
+    [Parameter(
+        Mandatory = $true,
+        Position = 0,
+        ValueFromPipeline = $true
+    )]
+    [PSObject[]]$collection
+)
 
-    Begin {
-        $items = @()
-        $columns = @{}
-    }
+# Source: https://gist.github.com/mac2000/86150ab43cfffc5d0eef
 
-    Process {
-        ForEach($item in $collection) {
-            $items += $item
+Begin {
+    $items = @()
+    $columns = @{}
+}
 
-            $item.PSObject.Properties | %{
-                if(-not $columns.ContainsKey($_.Name) -or $columns[$_.Name] -lt $_.Value.ToString().Length) {
-                    $columns[$_.Name] = $_.Value.ToString().Length
-                }
+Process {
+    ForEach($item in $collection) {
+        $items += $item
+
+        $item.PSObject.Properties | %{
+            if(-not $columns.ContainsKey($_.Name) -or $columns[$_.Name] -lt $_.Value.ToString().Length) {
+                $columns[$_.Name] = $_.Value.ToString().Length
             }
         }
     }
+}
 
-    End {
-        ForEach($key in $($columns.Keys)) {
-            $columns[$key] = [Math]::Max($columns[$key], $key.Length)
-        }
+End {
+    ForEach($key in $($columns.Keys)) {
+        $columns[$key] = [Math]::Max($columns[$key], $key.Length)
+    }
 
-        $header = @()
+    $header = @()
+    ForEach($key in $columns.Keys) {
+        $header += ('{0,-' + $columns[$key] + '}') -f $key
+    }
+    $header -join ' | '
+
+    $separator = @()
+    ForEach($key in $columns.Keys) {
+        $separator += '-' * $columns[$key]
+    }
+    $separator -join ' | '
+
+    ForEach($item in $items) {
+        $values = @()
         ForEach($key in $columns.Keys) {
-            $header += ('{0,-' + $columns[$key] + '}') -f $key
+            $values += ('{0,-' + $columns[$key] + '}') -f $item.($key)
         }
-        $header -join ' | '
-
-        $separator = @()
-        ForEach($key in $columns.Keys) {
-            $separator += '-' * $columns[$key]
-        }
-        $separator -join ' | '
-
-        ForEach($item in $items) {
-            $values = @()
-            ForEach($key in $columns.Keys) {
-                $values += ('{0,-' + $columns[$key] + '}') -f $item.($key)
-            }
-            $values -join ' | '
-        }
+        $values -join ' | '
     }
 }
