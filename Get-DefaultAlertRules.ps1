@@ -11,7 +11,7 @@ Param()
         AlertValidationSteps = @("https://todo/Insights+-+Server+errors")
         AlertFixSteps        = @("https://todo/Fixing+web+app")
         Criteria             = { New-AzMetricAlertRuleV2Criteria -MetricName 'Http5xx' -TimeAggregation Total -Operator GreaterThan -Threshold 5 }
-        Severity             = $severityWarning
+        Severity             = "Warning"
         WindowSize           = New-TimeSpan -Minutes 5
         Frequency            = New-TimeSpan -Minutes 5
     }
@@ -22,7 +22,7 @@ Param()
         AlertValidationSteps = @("https://todo/Insights+-+Server+errors")
         AlertFixSteps        = @("https://todo/Fixing+web+app")
         Criteria             = { New-AzMetricAlertRuleV2Criteria -MetricName 'Http5xx' -TimeAggregation Total -Operator GreaterThan -Threshold 100 }
-        Severity             = $severityCritical
+        Severity             = "Critical"
         WindowSize           = New-TimeSpan -Minutes 5
         Frequency            = New-TimeSpan -Minutes 5
     }
@@ -32,7 +32,7 @@ Param()
         Description   = 'CPU Usage too high!'
         AlertFixSteps = @("https://todo/Performance+scaling+-+WebApp")
         Criteria      = { New-AzMetricAlertRuleV2Criteria -MetricName 'CpuPercentage' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
-        Severity      = $severityWarning
+        Severity      = "Warning"
         WindowSize    = New-TimeSpan -Minutes 5
         Frequency     = New-TimeSpan -Minutes 5
     }
@@ -41,7 +41,7 @@ Param()
         Name         = 'Memory percentage'
         Description  = 'Memory Usage too high!'
         Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'MemoryPercentage' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
-        Severity     = $severityWarning
+        Severity     = "Warning"
         WindowSize   = New-TimeSpan -Minutes 5
         Frequency    = New-TimeSpan -Minutes 5
     }
@@ -50,7 +50,7 @@ Param()
         Name         = 'CPU Percentage'
         Description  = 'CPU Usage too high!'
         Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'cpu_percent' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
-        Severity     = $severityInformation
+        Severity     = "Information"
         WindowSize   = New-TimeSpan -Minutes 5
         Frequency    = New-TimeSpan -Minutes 5
     }
@@ -59,7 +59,7 @@ Param()
         Name         = 'DTU consumption'
         Description  = 'DTU consumption too high!'
         Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'dtu_consumption_percent' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
-        Severity     = $severityInformation
+        Severity     = "Information"
         WindowSize   = New-TimeSpan -Minutes 5
         Frequency    = New-TimeSpan -Minutes 5
     }
@@ -69,7 +69,7 @@ Param()
         Description   = 'SQL storage space is getting low!'
         AlertFixSteps = @("https://todo/Database+-+Storage+size")
         Criteria      = { New-AzMetricAlertRuleV2Criteria -MetricName 'storage_percent' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
-        Severity      = $severityError
+        Severity      = "Error"
         WindowSize    = New-TimeSpan -Minutes 5
         Frequency     = New-TimeSpan -Minutes 5
     }
@@ -78,7 +78,7 @@ Param()
         Name         = 'Server load'
         Description  = 'Server load too high!'
         Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'serverLoad' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
-        Severity     = $severityInformation
+        Severity     = "Information"
         WindowSize   = New-TimeSpan -Minutes 5
         Frequency    = New-TimeSpan -Minutes 5
     }
@@ -87,7 +87,7 @@ Param()
         Name         = 'Server memory'
         Description  = 'Server memory percentace too high!'
         Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'usedmemorypercentage' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
-        Severity     = $severityInformation
+        Severity     = "Information"
         WindowSize   = New-TimeSpan -Minutes 5
         Frequency    = New-TimeSpan -Minutes 5
     }
@@ -96,7 +96,7 @@ Param()
         Name         = 'Redis processor'
         Description  = 'Redis processor load too high!'
         Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'percentProcessorTime' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
-        Severity     = $severityInformation
+        Severity     = "Information"
         WindowSize   = New-TimeSpan -Minutes 5
         Frequency    = New-TimeSpan -Minutes 5
     }
@@ -110,7 +110,7 @@ Param()
             New-AzMetricAlertRuleV2DimensionSelection -DimensionName "availabilityResult/name" -ValuesToInclude $($_.Name) |
             New-AzMetricAlertRuleV2Criteria -MetricName "availabilityResults/availabilityPercentage" -TimeAggregation Average -Operator LessThan -Threshold 90
         }
-        Severity             = $severityCritical
+        Severity             = "Critical"
         WindowSize           = New-TimeSpan -Minutes 5
         Frequency            = New-TimeSpan -Minutes 5
     }

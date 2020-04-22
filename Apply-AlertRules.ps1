@@ -8,6 +8,17 @@ Set-StrictMode -Version Latest
 
 $resources = Get-AzResource -ResourceGroupName $ResourceGroup
 
+function SeverityAsInt([string]$Severity)
+{
+    switch ($Severity) {
+        "Critical" { return 0 }
+        "Error" { return 1 }
+        "Warning" { return 2 }
+        "Information" { return 3 }
+        Default { throw "Invalid option for severity $Severity"}
+    }
+}
+
 function ResolveDescription([PsCustomObject]$mathingAlertRule, [PsCustomObject]$resource) {
     [System.Collections.ArrayList]$alertValidations = @()
     [System.Collections.ArrayList]$alertFixSteps = @()
