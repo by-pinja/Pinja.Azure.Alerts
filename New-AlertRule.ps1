@@ -9,17 +9,27 @@ Param(
     [string[]][Parameter()]$AlertValidationSteps = @(),
     [string[]][Parameter()]$AlertFixSteps = @(),
     [timespan][Parameter()]$WindowSize,
-    [timespan][Parameter()]$Frequency
+    [timespan][Parameter()]$Frequency,
+    [PsCustomObject[]][Parameter(ValueFromPipeline)]$InputObject
 )
 
-return [PSCustomObject]@{
-    ResourceType         = $ResourceType
-    Name                 = $Name
-    Description          = $Description
-    AlertValidationSteps = $AlertValidationSteps
-    AlertFixSteps        = $AlertFixSteps
-    Criteria             = $Criteria
-    Severity             = $Severity
-    WindowSize           = if ($WindowSize) { $WindowSize } else { New-TimeSpan -Minutes 5 }
-    Frequency            = if ($Frequency) { $Frequency } else { New-TimeSpan -Minutes 5 }
+PROCESS
+{
+    foreach ($original in $InputObject) {
+        return $original
+    }
+}
+END
+{
+    [PSCustomObject]@{
+        ResourceType         = $ResourceType
+        Name                 = $Name
+        Description          = $Description
+        AlertValidationSteps = $AlertValidationSteps
+        AlertFixSteps        = $AlertFixSteps
+        Criteria             = $Criteria
+        Severity             = $Severity
+        WindowSize           = if ($WindowSize) { $WindowSize } else { New-TimeSpan -Minutes 5 }
+        Frequency            = if ($Frequency) { $Frequency } else { New-TimeSpan -Minutes 5 }
+    }
 }
