@@ -10,6 +10,9 @@ Set-StrictMode -Version Latest
 
 $resources = Get-AzResource -ResourceGroupName $ResourceGroup
 
+$overWrites = $AlertRules | where { "SpecialRuleType" -in $_.PsObject.Properties.Name -and $_.SpecialRuleType -eq "OVERWRITE" }
+$AlertRules = $AlertRules | where { "SpecialRuleType" -notin $_.PsObject.Properties.Name }
+
 function SeverityAsInt([string]$Severity) {
     switch ($Severity) {
         "Critical" { return 0 }
@@ -20,16 +23,39 @@ function SeverityAsInt([string]$Severity) {
     }
 }
 
-$alertRef = Set-AzActionGroup `
-    -Name "azure-alerts" `
-    -ResourceGroup $ResourceGroup `
-    -ShortName "azure-alerts" `
-    -Receiver $ActionGroupReceiver `
-    -DisableGroup:$DisableAlerts `
-    -WarningAction SilentlyContinue
+$PSCmdlet.ShouldProcess($ResourceGroup, "Set-AzActionGroup - azure-alerts")
+{
+    $alertRef = Set-AzActionGroup `
+        -Name "azure-alerts" `
+        -ResourceGroup $ResourceGroup `
+        -ShortName "azure-alerts" `
+        -Receiver $ActionGroupReceiver `
+        -DisableGroup:$DisableAlerts `
+        -WarningAction SilentlyContinue
 
-# See https://github.com/Azure/azure-powershell/issues/9259 ...
-$alertRef = New-AzActionGroup -ActionGroupId $alertRef.Id
+    # See https://github.com/Azure/azure-powershell/issues/9259 ...
+    $alertRef = New-AzActionGroup -ActionGroupId $alertRef.Id
+}
+
+function ConcatStepTexts([string[]]$new, [string[]]$old, [string]$howToConcat)
+{
+    switch ($howToConcat) {
+        "Before" { return $new + $old }
+        "After" { return $old + $new }
+        "Replace" { return $new }
+        Default {}
+    }
+}
+
+function ApplyOverwrite([PsCustomObject]$mathingAlertRule, [PsCustomObject]$overWrite) {
+    if ($overWrite.FixSteps) {
+        $mathingAlertRule.AlertFixSteps = ConcatStepTexts $overWrite.FixSteps $mathingAlertRule.AlertFixSteps $overWrite.FixStepsLocation
+    }
+
+    if ($overWrite.ValidationSteps) {
+        $mathingAlertRule.AlertValidationSteps = ConcatStepTexts $overWrite.ValidationSteps $mathingAlertRule.AlertValidationSteps $overWrite.ValidationStepsLocation
+    }
+}
 
 function ResolveDescription([PsCustomObject]$mathingAlertRule, [PsCustomObject]$resource) {
     [System.Collections.ArrayList]$alertValidations = @()
@@ -62,7 +88,10 @@ foreach ($resource in $resources) {
     $matchingRules = $AlertRules | where { $_.ResourceType -eq $resource.ResourceType }
 
     foreach ($matchingRule in $matchingRules) {
-        if (($matchingRule.PsObject.Properties -contains "Filter") ) {
+        $applicapleOverwrites = $overWrites | where { $_.ResourceType -eq $matchingRule.ResourceType -and $_.Name -eq $matchingRule.Name }
+
+        foreach ($overwrite in $applicapleOverwrites) {
+            ApplyOverwrite $matchingRule $overWrite
         }
 
         $fullName = "$($matchingRule.Name)-$($resource.Name -replace '/','-')"
@@ -70,11 +99,11 @@ foreach ($resource in $resources) {
 
         Write-Verbose "Applying alert rule $($matchingRule.Name) to $($resource.Id)"
 
-        # There is very anonying warning that some namespace of class is going to change one day in future. For that reason all warnings are suppressed.
+        # There is very anonying warning that some namespace of class is going to change one day in future (which cannot be fixed atm). For that reason all warnings are suppressed.
         # This isn't ideal solution however (3>$null).
         $criteria = Invoke-Command -ScriptBlock $matchingRule.Criteria -InputObject $resource 3>$null
 
-        if ($PSCmdlet.ShouldProcess($fullName, $resource.Id)) {
+        if ($PSCmdlet.ShouldProcess($resource.Id, $fullName)) {
             Add-AzMetricAlertRuleV2 `
                 -Name $fullName `
                 -ResourceGroupName $ResourceGroup `
