@@ -27,4 +27,4 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
           MD_FOLDER: wiki
           OWNER: by-pinja
-          REPO_NAME: azure-alerts
+          REPO_NAME: Pinja.Azure.Alerts
