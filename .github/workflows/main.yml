@@ -1,0 +1,30 @@
+name: Publish automatically generated documentation to wiki
+# This workflow is triggered on pushes to the repository.
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    # Job name is Greeting
+    name: Publish wiki
+    # This job runs on Linux
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/powershell:latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Generate documentation
+        run: Write-Host "testing"
+      
+      - name: Upload Release Notes to Wiki
+        uses: docker://decathlon/wiki-page-creator-action:2.0.1
+        env:
+          ACTION_MAIL: noreply@pinja.com
+          ACTION_NAME: CI
+          GH_PAT: ${{ secrets.GH_PAT }}
+          MD_FOLDER: wiki
+          OWNER: by-pinja
+          REPO_NAME: azure-alerts
