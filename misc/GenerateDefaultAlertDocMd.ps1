@@ -10,6 +10,27 @@ if(-not (Test-Path $parentFolder))
     New-Item -ItemType Directory $parentFolder -Force
 }
 
-$asText = Get-DefaultAlertRules | &"$PSScriptRoot/ConvertTo-Markdown.ps1"
+$asText = "
+# Default alerts
+These alerts are tried used as good baseline default for all matching resources.
+"
+
+foreach($rule in  Get-DefaultAlertRules)
+{
+    $asText += @"
+| Name                 | Value |
+|----------------------|-------|
+| Name                 | $($rule.Name)                      |
+| ResourceType         | $($rule.ResourceType)              |
+| Description          | $($rule.Description)               |
+| AlertValidationSteps | $($rule.AlertValidationSteps)      |
+| AlertFixSteps        | $($rule.AlertFixSteps)             |
+| Criteria             | $((($rule.Criteria).ToString() -replace '\|','' -replace "`t|`n|`r","").Trim())  |
+| Severity     | $($rule.Severity)          |
+
+
+"@
+
+}
 
 $asText | Set-Content -Path $OutPath
