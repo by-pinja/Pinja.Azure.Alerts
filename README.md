@@ -1,5 +1,7 @@
 # azure-alerts
 
+[![Pinja.Azure.Alerts](https://img.shields.io/powershellgallery/v/Pinja.Azure.Alerts.svg?style=flat-square&label=Pinja.Azure.Alerts)](https://www.powershellgallery.com/packages/Pinja.Azure.Alerts/)
+
 This is common baseline solution to apply good default alerts to any azure deployment with few simple commands. Alerts are applied based on resource types to all matching resources in resource group.
 
 Goal is also to support more complicated alerts when needed by extending, overwriting existing alerts or by creting new ones. When none of these are applicaple you can still
