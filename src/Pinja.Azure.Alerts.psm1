@@ -1,5 +1,3 @@
-#Requires -Modules Az.Resources
-
 . $PSScriptRoot/Get-DefaultAlertRules.ps1
 . $PSScriptRoot/New-AlertRule.ps1
 . $PSScriptRoot/New-AlertRuleOverwrite.ps1

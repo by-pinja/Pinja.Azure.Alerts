@@ -1,7 +1,7 @@
 [CmdLetBinding()]
 Param([string]$OutPath)
 
-. $PSScriptRoot/../Get-DefaultAlertRules.ps1
+. $PSScriptRoot/../src/Get-DefaultAlertRules.ps1
 
 $asText = Get-DefaultAlertRules | &"$PSScriptRoot/ConvertTo-Markdown.ps1"
 
