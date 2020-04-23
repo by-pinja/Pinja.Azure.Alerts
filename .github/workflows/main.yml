@@ -16,10 +16,10 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Generate documentation
-        run: Write-Host "testing"
+        run: ./misc/GenerateDefaultAlertDocMd.ps1 -OutPath ./wiki/default-alerts.md
         shell: pwsh
-      
-      - name: Upload Release Notes to Wiki
+
+      - name: Upload documentation to wiki
         uses: docker://decathlon/wiki-page-creator-action:2.0.1
         env:
           ACTION_MAIL: noreply@pinja.com
