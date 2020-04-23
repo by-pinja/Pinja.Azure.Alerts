@@ -1,3 +1,6 @@
+
+Import-Module 
+
 $webHookReceiver = New-AzActionGroupReceiver `
     -Name 'FunctionAppWebHook' `
     -WebhookReceiver `
