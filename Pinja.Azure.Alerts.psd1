@@ -21,7 +21,7 @@ ModuleVersion = '0.0.1'
 GUID = '88de01ab-5916-41fd-af27-9a511fe62d8d'
 
 # Author of this module
-Author = 'Pekka Savolainen'
+Author = 'pekka.savolainen@pinja.com'
 
 # Company or vendor of this module
 CompanyName = 'Pinja'
@@ -30,7 +30,7 @@ CompanyName = 'Pinja'
 Copyright = '(c) Pinja. All rights reserved.'
 
 # Description of the functionality provided by this module
-# Description = ''
+Description = 'Powershell module to simplify getting good default alerts for all environments'
 
 # Minimum version of the PowerShell engine required by this module
 # PowerShellVersion = ''
@@ -105,7 +105,7 @@ PrivateData = @{
         # LicenseUri = ''
 
         # A URL to the main website for this project.
-        ProjectUri = 'https://github.com/by-pinja/azure-alerts'
+        ProjectUri = 'https://github.com/by-pinja/Pinja.Azure.Alerts'
 
         # A URL to an icon representing this module.
         # IconUri = ''
