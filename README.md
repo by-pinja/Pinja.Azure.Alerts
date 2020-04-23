@@ -19,8 +19,8 @@ You have to define [receiver](https://docs.microsoft.com/en-us/powershell/module
 TODO: Example with alerta
 
 ```powershell
-Install-Module todo # TODO fix this name after this project is deployed to oneget.
-Import-Module todo
+Install-Module Pinja.Azure.Alerts # TODO fix this name after this project is deployed to oneget.
+Import-Module Pinja.Azure.Alerts
 
 $receiver = New-AzActionGroupReceiver `
     -Name 'todo' `
