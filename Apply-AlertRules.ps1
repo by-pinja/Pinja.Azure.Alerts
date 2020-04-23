@@ -55,6 +55,22 @@ function ApplyOverwrite([PsCustomObject]$mathingAlertRule, [PsCustomObject]$over
     if ($overWrite.ValidationSteps) {
         $mathingAlertRule.AlertValidationSteps = ConcatStepTexts $overWrite.ValidationSteps $mathingAlertRule.AlertValidationSteps $overWrite.ValidationStepsLocation
     }
+
+    if ($overWrite.Severity) {
+        $mathingAlertRule.Severity = $overWrite.Severity
+    }
+
+    if ($overWrite.Criteria) {
+        $mathingAlertRule.Criteria = $overWrite.Criteria
+    }
+
+    if ($overWrite.WindowSize) {
+        $mathingAlertRule.WindowSize = $overWrite.WindowSize
+    }
+
+    if ($overWrite.Frequency) {
+        $mathingAlertRule.Frequency = $overWrite.Frequency
+    }
 }
 
 function ResolveDescription([PsCustomObject]$mathingAlertRule, [PsCustomObject]$resource) {

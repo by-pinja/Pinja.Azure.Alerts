@@ -18,6 +18,9 @@ Param(
 
     [ScriptBlock][Parameter()]$Criteria,
 
+    [timespan][Parameter()]$WindowSize,
+    [timespan][Parameter()]$Frequency,
+
     [PsCustomObject[]][Parameter(ValueFromPipeline)]$InputObject
 )
 
@@ -36,5 +39,9 @@ END {
         FixStepsLocation             = $FixStepsLocation
         ValidationSteps              = $ValidationSteps
         ValidationLocation           = $ValidationStepsLocation
+        Severity                     = $Severity
+        Criteria                     = $Criteria
+        WindowSize                   = $WindowSize
+        Frequency                    = $Frequency
     }
 }
