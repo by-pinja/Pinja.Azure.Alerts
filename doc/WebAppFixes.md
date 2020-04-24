@@ -7,7 +7,7 @@ Follow resource link from alert (resource is likely different than in image):
 
 In resource Overview (from left) at top overview page there is restart button:
 
-![Restart button](./img/2020-04-24-08-19-41.png)
+![Restart button](img/2020-04-24-08-19-41.png)
 
 Press it and  approve restart.
 
