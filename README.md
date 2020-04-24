@@ -25,7 +25,7 @@ Import-Module Pinja.Azure.Alerts
 $receiver = New-AzActionGroupReceiver `
     -Name 'alerta-webhook' `
     -WebhookReceiver `
-    -ServiceUri "todo" `
+    -ServiceUri "http://your.alerta.domain/webhooks/azuremonitor" `
     -UseCommonAlertSchema
 
 Get-DefaultAlertRules | Set-AlertRules -ResourceGroup [Your resource group] -ActionGroupReceiver $receiver
