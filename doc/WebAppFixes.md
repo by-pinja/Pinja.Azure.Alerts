@@ -11,7 +11,7 @@ In resource Overview (from left) at top overview page there is restart button:
 
 Press it and  approve restart.
 
-![Apply](./img/2020-04-24-08-19-56.png)
+![Apply](img/2020-04-24-08-19-56.png)
 
 Wait for 5 minutes to make sure restart is ready. After that validate that is application working.
 
@@ -19,7 +19,7 @@ Wait for 5 minutes to make sure restart is ready. After that validate that is ap
 
 Check alerting service health:
 
-![Service health button](./img/2020-04-24-09-22-43.png)
+![Service health button](img/2020-04-24-09-22-43.png)
 
 And follow tutorial from <https://docs.microsoft.com/en-us/azure/service-health/resource-health-overview>
 
@@ -35,16 +35,16 @@ This enforces full restart of application plan. It is good to know that this wil
 
 Navigate to Scale Up
 
-![Scale up](./img/2020-04-24-08-23-32.png)
+![Scale up](img/2020-04-24-08-23-32.png)
 
 There you can see current plan, change it to 1 tier upwards.
 
-![TiersA](./img/2020-04-24-08-20-25.png)
+![TiersA](img/2020-04-24-08-20-25.png)
 
-![TiersB](./img/2020-04-24-08-20-45.png)
+![TiersB](img/2020-04-24-08-20-45.png)
 
 After that press 
 
-![Apply](./img/2020-04-24-08-21-04.png)
+![Apply](img/2020-04-24-08-21-04.png)
 
 Scaling will take little while. Wait for 15 minutes and check if issue is fixed.
