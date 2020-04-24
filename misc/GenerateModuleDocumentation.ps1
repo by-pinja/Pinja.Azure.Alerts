@@ -9,6 +9,8 @@ if(-not $OutPath)
 }
 
 
+Install-Module platyPS
+Import-Module platyPS
 Remove-Module Pinja.Azure.Alerts -ErrorAction SilentlyContinue
 Import-Module $PSScriptRoot/../src/Pinja.Azure.Alerts.psd1
 
