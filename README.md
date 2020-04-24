@@ -66,13 +66,15 @@ For this reason there is support to easily extend documentation for specific ale
 api have increased error rate it is usually good routine to point to test payments instead of something else.
 
 ```powerhell
-Get-DefaultAlertRules |
-    New-AlertRuleOverwrite `
+$rules = Get-DefaultAlertRules
+$overWrites = New-AlertRuleOverwrite `
         -ResourceType "Microsoft.Web/Sites" `
         -Name "Few Server errors" `
         -FixSteps "https://youAdditionalSteps.com" `
         -ResourceFilter { $_.Name -like "*my-web-api*" } `
         -FixStepsLocation Before
+
+Get-DefaultAlertRules | Set-AlertRules -ResourceGroup [Your resource group] -ActionGroupReceiver $receiver -OverWrites $overWrites
 ```
 
 Adds additional documentation to alert rule `Microsoft.Web/Sites` > `Few Server errors` on web site where resource name matches `*my-web-api*`.

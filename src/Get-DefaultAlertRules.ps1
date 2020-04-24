@@ -1,4 +1,21 @@
 function Get-DefaultAlertRules {
+    <#
+    .SYNOPSIS
+    Generate good default alerts for environments.
+
+    .DESCRIPTION
+    Generate good default alerts for environments. This will evolve over time to match future needs and upcoming resource types.
+
+    This method works as entrypoint to create more specific alerting setup when needed.
+
+    .EXAMPLE
+    Get-DefaultAlertRules
+
+    Returns current well known setup of alert defaults.
+
+    .NOTES
+    General notes
+    #>
     [CmdletBinding()]
     [OutputType([PSCustomObject[]])]
     Param()
