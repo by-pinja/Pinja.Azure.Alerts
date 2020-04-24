@@ -1,10 +1,10 @@
 function Get-DefaultAlertRules {
     <#
     .SYNOPSIS
-    Generate good default alerts for environments.
+    Provide good default alert rules for environments.
 
     .DESCRIPTION
-    Generate good default alerts for environments. This will evolve over time to match future needs and upcoming resource types.
+    Provide good default alert rules for environments. This will evolve over time to match future needs and upcoming resource types.
 
     This method works as entrypoint to create more specific alerting setup when needed.
 
