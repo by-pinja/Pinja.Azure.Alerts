@@ -75,7 +75,7 @@ $overWrites = New-AlertRuleOverwrite `
         -ResourceFilter { $_.Name -like "*my-web-api*" } `
         -FixStepsLocation Before
 
-Get-DefaultAlertRules |
+$rules |
     Set-AlertRules -ResourceGroup [Your resource group] -ActionGroupReceiver $receiver -OverWrites $overWrites
 ```
 
