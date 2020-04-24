@@ -12,9 +12,6 @@ function Get-DefaultAlertRules {
     Get-DefaultAlertRules
 
     Returns current well known setup of alert defaults.
-
-    .NOTES
-    General notes
     #>
     [CmdletBinding()]
     [OutputType([PSCustomObject[]])]
