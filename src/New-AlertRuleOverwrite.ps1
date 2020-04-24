@@ -33,7 +33,6 @@ function New-AlertRuleOverwrite {
     }
     END {
         [PSCustomObject]@{
-            SpecialRuleType              = "OVERWRITE"
             Name                         = $Name
             ResourceType                 = $ResourceType
             ApplyOverwriteResourceFilter = $ApplyOverwriteResourceFilter

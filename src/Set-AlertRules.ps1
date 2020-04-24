@@ -1,5 +1,34 @@
 
 function Set-AlertRules {
+    <#
+    .SYNOPSIS
+    Set alert rules to resource group.
+
+    .DESCRIPTION
+    Set alert rules to resource group. Get all resources from group and applies all given alert rules, overwrites if defined with
+    default alert group `azure-alerts`. You must supply action group receiver where alerts are sent when triggered.
+
+    .PARAMETER ResourceGroup
+    Resource group in azure.
+
+    .PARAMETER AlertRules
+    In simplest form output from Get-DefaultAlertRules, rules that will be applied based on resource type.
+
+    .PARAMETER OverWrites
+    You can overwrite specific alerts in specific resources when needed. See Get-AlertRuleOverwrite for more information.
+
+    .PARAMETER ActionGroupReceiver
+    Parameter description
+
+    .PARAMETER DisableAlerts
+    Parameter description
+
+    .EXAMPLE
+    An example
+
+    .NOTES
+    General notes
+    #>
     [CmdLetBinding(SupportsShouldProcess)]
     [OutputType([PSCustomObject[]])]
     Param(

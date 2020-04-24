@@ -65,7 +65,8 @@ how it behaves after alert is triggered before further actions are done.
 For this reason there is support to easily extend documentation for specific alerts of resource. As example if payment releated
 api have increased error rate it is usually good routine to point to test payments instead of something else.
 
-```powerhell
+```powershell
+
 $rules = Get-DefaultAlertRules
 $overWrites = New-AlertRuleOverwrite `
         -ResourceType "Microsoft.Web/Sites" `
@@ -74,7 +75,8 @@ $overWrites = New-AlertRuleOverwrite `
         -ResourceFilter { $_.Name -like "*my-web-api*" } `
         -FixStepsLocation Before
 
-Get-DefaultAlertRules | Set-AlertRules -ResourceGroup [Your resource group] -ActionGroupReceiver $receiver -OverWrites $overWrites
+Get-DefaultAlertRules |
+    Set-AlertRules -ResourceGroup [Your resource group] -ActionGroupReceiver $receiver -OverWrites $overWrites
 ```
 
 Adds additional documentation to alert rule `Microsoft.Web/Sites` > `Few Server errors` on web site where resource name matches `*my-web-api*`.
