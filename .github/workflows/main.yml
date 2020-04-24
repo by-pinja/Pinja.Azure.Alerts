@@ -15,8 +15,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Generate documentation
+      - name: Generate default alert rule documentation
         run: ./misc/GenerateDefaultAlertDocMd.ps1 -OutPath ./wiki/default-alert-rules.md
+        shell: pwsh
+
+      - name: Generate documentation
+        run: ./misc/GenerateModuleDocumentation.ps1 -OutPath ./wiki/
         shell: pwsh
 
       - name: Upload documentation to wiki
