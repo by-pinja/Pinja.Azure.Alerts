@@ -11,7 +11,7 @@ function Get-DefaultAlertRules {
             Name                 = 'Few Server errors'
             Description          = 'Too many server errors!'
             AlertValidationSteps = @("https://todo/Insights+-+Server+errors")
-            AlertFixSteps        = @("https://todo/Fixing+web+app")
+            AlertFixSteps        = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/WebAppFixes.md")
             Criteria             = { New-AzMetricAlertRuleV2Criteria -MetricName 'Http5xx' -TimeAggregation Total -Operator GreaterThan -Threshold 5 }
             Severity             = "Warning"
             WindowSize           = New-TimeSpan -Minutes 5
@@ -22,7 +22,7 @@ function Get-DefaultAlertRules {
             Name                 = 'Many Server errors'
             Description          = 'Way too many server errors!'
             AlertValidationSteps = @("https://todo/Insights+-+Server+errors")
-            AlertFixSteps        = @("https://todo/Fixing+web+app")
+            AlertFixSteps        = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/WebAppFixes.md")
             Criteria             = { New-AzMetricAlertRuleV2Criteria -MetricName 'Http5xx' -TimeAggregation Total -Operator GreaterThan -Threshold 100 }
             Severity             = "Critical"
             WindowSize           = New-TimeSpan -Minutes 5
@@ -69,7 +69,7 @@ function Get-DefaultAlertRules {
             ResourceType  = 'Microsoft.Sql/servers/databases'
             Name          = 'SQL Storage'
             Description   = 'SQL storage space is getting low!'
-            AlertFixSteps = @("https://todo/Database+-+Storage+size")
+            AlertFixSteps = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/SqlServerStorageSize.md")
             Criteria      = { New-AzMetricAlertRuleV2Criteria -MetricName 'storage_percent' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
             Severity      = "Error"
             WindowSize    = New-TimeSpan -Minutes 5
@@ -107,7 +107,7 @@ function Get-DefaultAlertRules {
             Name                 = "Availability percent"
             Description          = "Web app didn't respond multiple times in timely manner!"
             AlertValidationSteps = @("https://todo/Insights+-+Server+errors")
-            AlertFixSteps        = @("https://todo/Fixing+web+app")
+            AlertFixSteps        = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/WebAppFixes.md")
             Criteria             = {
                 New-AzMetricAlertRuleV2DimensionSelection -DimensionName "availabilityResult/name" -ValuesToInclude $($_.Name) |
                 New-AzMetricAlertRuleV2Criteria -MetricName "availabilityResults/availabilityPercentage" -TimeAggregation Average -Operator LessThan -Threshold 90
