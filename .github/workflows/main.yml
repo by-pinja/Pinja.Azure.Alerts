@@ -1,6 +1,5 @@
 name: Publish automatically generated documentation to wiki
 on:
-  push:
   release:
     types: [created]
 

@@ -9,4 +9,4 @@ if($env:GITHUB_REF) {
     Update-ModuleManifest -Path $PSScriptRoot/Pinja.Azure.Alerts/Pinja.Azure.Alerts.psd1 -ModuleVersion $Version
 }
 
-Publish-Module -Path $PSScriptRoot/Pinja.Azure.Alerts -NuGetApiKey $NuGetApiKey -WhatIf
+Publish-Module -Path $PSScriptRoot/Pinja.Azure.Alerts -NuGetApiKey $NuGetApiKey
