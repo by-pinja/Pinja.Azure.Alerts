@@ -40,4 +40,4 @@ jobs:
         env:
           NUGET_KEY: ${{ secrets.NUGET_KEY }}
         shell: pwsh
-        run: .\Publish.ps1 -Version $env:RELEASE_VERSION -NuGetApiKey $env:NUGET_KEY -Verbose
+        run: .\Publish.ps1 -NuGetApiKey $env:NUGET_KEY -Verbose
