@@ -1,7 +1,7 @@
 [CmdLetBinding()]
 Param([string]$OutPath)
 
-. $PSScriptRoot/../src/Get-DefaultAlertRules.ps1
+. $PSScriptRoot/../Pinja.Azure.Alerts/Get-DefaultAlertRules.ps1
 
 $parentFolder = (Split-Path -Path $OutPath -Parent)
 

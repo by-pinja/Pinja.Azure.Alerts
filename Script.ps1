@@ -1,5 +1,5 @@
 
-Get-ChildItem $PSScriptRoot/src/*.ps1 | foreach { . $_.FullName }
+Get-ChildItem $PSScriptRoot/Pinja.Azure.Alerts/*.ps1 | foreach { . $_.FullName }
 
 $receiver = New-AzActionGroupReceiver `
     -Name 'FunctionAppWebHook' `
