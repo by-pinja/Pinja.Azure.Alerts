@@ -115,7 +115,7 @@ function Set-AlertRules {
         }
 
 
-        $PSCmdlet.ShouldProcess($ResourceGroup, "Set-AzActionGroup - azure-alerts")
+        if($PSCmdlet.ShouldProcess($ResourceGroup, "Set-AzActionGroup - azure-alerts"))
         {
             $alertRef = Set-AzActionGroup `
                 -Name "azure-alerts" `
