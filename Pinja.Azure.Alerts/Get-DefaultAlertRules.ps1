@@ -24,7 +24,7 @@ function Get-DefaultAlertRules {
             # This can be used to extend alerts to specific resource instead of all instances of one type.
             Name                 = 'Few Server errors'
             Description          = 'Too many server errors!'
-            AlertValidationSteps = @("https://todo/Insights+-+Server+errors")
+            AlertValidationSteps = @("https://docs.microsoft.com/en-us/azure/azure-monitor/app/tutorial-runtime-exceptions#analyze-failures")
             AlertFixSteps        = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/WebAppFixes.md")
             Criteria             = { New-AzMetricAlertRuleV2Criteria -MetricName 'Http5xx' -TimeAggregation Total -Operator GreaterThan -Threshold 5 }
             Severity             = "Warning"
@@ -35,7 +35,7 @@ function Get-DefaultAlertRules {
             ResourceType         = 'Microsoft.Web/Sites'
             Name                 = 'Many Server errors'
             Description          = 'Way too many server errors!'
-            AlertValidationSteps = @("https://todo/Insights+-+Server+errors")
+            AlertValidationSteps = @("https://docs.microsoft.com/en-us/azure/azure-monitor/app/tutorial-runtime-exceptions#analyze-failures")
             AlertFixSteps        = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/WebAppFixes.md")
             Criteria             = { New-AzMetricAlertRuleV2Criteria -MetricName 'Http5xx' -TimeAggregation Total -Operator GreaterThan -Threshold 100 }
             Severity             = "Critical"
@@ -46,7 +46,8 @@ function Get-DefaultAlertRules {
             ResourceType  = 'Microsoft.Web/serverFarms'
             Name          = 'CPU percentage'
             Description   = 'CPU Usage too high!'
-            AlertFixSteps = @("https://todo/Performance+scaling+-+WebApp")
+            AlertValidationSteps = @("https://docs.microsoft.com/en-us/azure/azure-monitor/app/tutorial-performance")
+            AlertFixSteps = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/WebAppScaling.md")
             Criteria      = { New-AzMetricAlertRuleV2Criteria -MetricName 'CpuPercentage' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
             Severity      = "Warning"
             WindowSize    = New-TimeSpan -Minutes 5
@@ -56,6 +57,8 @@ function Get-DefaultAlertRules {
             ResourceType = 'Microsoft.Web/serverFarms'
             Name         = 'Memory percentage'
             Description  = 'Memory Usage too high!'
+            AlertValidationSteps = @("https://docs.microsoft.com/en-us/azure/azure-monitor/app/tutorial-performance")
+            AlertFixSteps = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/WebAppScaling.md#scaling-apps-up")
             Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'MemoryPercentage' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
             Severity     = "Warning"
             WindowSize   = New-TimeSpan -Minutes 5
@@ -65,6 +68,7 @@ function Get-DefaultAlertRules {
             ResourceType = 'Microsoft.Sql/servers/databases'
             Name         = 'CPU Percentage'
             Description  = 'CPU Usage too high!'
+            AlertFixSteps = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/SqlServerTier.md")
             Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'cpu_percent' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
             Severity     = "Information"
             WindowSize   = New-TimeSpan -Minutes 5
@@ -74,6 +78,7 @@ function Get-DefaultAlertRules {
             ResourceType = 'Microsoft.Sql/servers/databases'
             Name         = 'DTU consumption'
             Description  = 'DTU consumption too high!'
+            AlertFixSteps = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/SqlServerTier.md")
             Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'dtu_consumption_percent' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
             Severity     = "Information"
             WindowSize   = New-TimeSpan -Minutes 5
@@ -120,7 +125,7 @@ function Get-DefaultAlertRules {
             ResourceType         = 'Microsoft.Insights/webtests'
             Name                 = "Availability percent"
             Description          = "Web app didn't respond multiple times in timely manner!"
-            AlertValidationSteps = @("https://todo/Insights+-+Server+errors")
+            AlertValidationSteps = @("https://docs.microsoft.com/en-us/azure/azure-monitor/app/tutorial-runtime-exceptions#analyze-failures")
             AlertFixSteps        = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/WebAppFixes.md")
             Criteria             = {
                 New-AzMetricAlertRuleV2DimensionSelection -DimensionName "availabilityResult/name" -ValuesToInclude $($_.Name) |
