@@ -1,7 +1,8 @@
 # Fixing web app
 
-Follow resource link from alert (resource is likely different than in image):
+Go to alerting resource from link:
 
+![Affected resource link](img/2020-04-22-11-39-41.png)
 
 ## Restarting web app
 
@@ -43,7 +44,7 @@ There you can see current plan, change it to 1 tier upwards.
 
 ![TiersB](img/2020-04-24-08-20-45.png)
 
-After that press 
+After that press
 
 ![Apply](img/2020-04-24-08-21-04.png)
 
