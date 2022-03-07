@@ -32,6 +32,10 @@ jobs:
           OWNER: by-pinja
           REPO_NAME: Pinja.Azure.Alerts
 
+      - name: Install curl
+        run: apt update && apt install curl -y
+        shell: bash
+
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '6.0'
