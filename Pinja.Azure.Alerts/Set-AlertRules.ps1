@@ -126,7 +126,7 @@ function Set-AlertRules {
                 -WarningAction SilentlyContinue
 
             # See https://github.com/Azure/azure-powershell/issues/9259 ...
-            $alertRef = New-AzActionGroup -ActionGroupId $alertRef.Id
+            $alertRef = New-AzActivityLogAlertActionGroupObject -Id $alertRef.Id
         }
     }
 
