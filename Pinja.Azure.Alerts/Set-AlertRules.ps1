@@ -124,9 +124,6 @@ function Set-AlertRules {
                 -Receiver $ActionGroupReceiver `
                 -DisableGroup:$DisableAlerts `
                 -WarningAction SilentlyContinue
-
-            # See https://github.com/Azure/azure-powershell/issues/9259 ...
-            $alertRef = New-AzActivityLogAlertActionGroupObject -Id $alertRef.Id
         }
     }
 
@@ -163,7 +160,7 @@ function Set-AlertRules {
                         -Description $fullDescription `
                         -Severity (SeverityAsInt $rule.Severity) `
                         -Condition $criteria `
-                        -ActionGroup $alertRef | Out-Null
+                        -ActionGroupId $alertRef.Id | Out-Null
                 }
 
                 [PsCustomObject]@{
