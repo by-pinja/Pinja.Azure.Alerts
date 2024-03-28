@@ -115,15 +115,24 @@ function Set-AlertRules {
         }
 
 
-        if($PSCmdlet.ShouldProcess($ResourceGroup, "Set-AzActionGroup - azure-alerts"))
-        {
-            $alertRef = Set-AzActionGroup `
-                -Name "azure-alerts" `
-                -ResourceGroup $ResourceGroup `
-                -ShortName "azure-alerts" `
-                -Receiver $ActionGroupReceiver `
-                -DisableGroup:$DisableAlerts `
-                -WarningAction SilentlyContinue
+        if ($PSCmdlet.ShouldProcess($ResourceGroup, "Update-AzActionGroug - azure-alerts")) {
+            if (Get-AzActionGroup -Name "azure-alerts" -ResourceGroup $ResourceGroup) {
+                $alertRef = Update-AzActionGroup `
+                    -Name "azure-alerts" `
+                    -ResourceGroup $ResourceGroup `
+                    -ShortName "azure-alerts" `
+                    -WebhookReceiver $ActionGroupReceiver `
+                    -Enabled:(!$DisableAlerts)
+            }
+            else {
+                $alertRef = New-AzActionGroup `
+                    -Name "azure-alerts" `
+                    -ResourceGroup $ResourceGroup `
+                    -ShortName "azure-alerts" `
+                    -WebhookReceiver $ActionGroupReceiver `
+                    -Enabled:(!$DisableAlerts)
+            }
+            
         }
     }
 
