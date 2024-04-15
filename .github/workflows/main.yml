@@ -22,15 +22,15 @@ jobs:
         run: ./misc/GenerateModuleDocumentation.ps1 -OutPath ./wiki/
         shell: pwsh
 
-      - name: Upload documentation to wiki
-        uses: docker://decathlon/wiki-page-creator-action:2.0.1
-        env:
-          ACTION_MAIL: noreply@pinja.com
-          ACTION_NAME: CI
-          GH_PAT: ${{ secrets.GH_PAT }}
-          MD_FOLDER: wiki
-          OWNER: by-pinja
-          REPO_NAME: Pinja.Azure.Alerts
+      # - name: Upload documentation to wiki
+      #   uses: docker://decathlon/wiki-page-creator-action:2.0.1
+      #   env:
+      #     ACTION_MAIL: noreply@pinja.com
+      #     ACTION_NAME: CI
+      #     GH_PAT: ${{ secrets.GH_PAT }}
+      #     MD_FOLDER: wiki
+      #     OWNER: by-pinja
+      #     REPO_NAME: Pinja.Azure.Alerts
 
       - name: Install curl
         run: apt update && apt install curl -y
