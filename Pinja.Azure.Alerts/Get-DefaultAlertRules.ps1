@@ -59,7 +59,7 @@ function Get-DefaultAlertRules {
             Description  = 'Memory Usage too high!'
             AlertValidationSteps = @("https://docs.microsoft.com/en-us/azure/azure-monitor/app/tutorial-performance")
             AlertFixSteps = @("https://github.com/by-pinja/Pinja.Azure.Alerts/blob/master/doc/WebAppScaling.md#scaling-apps-up")
-            Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'MemoryPercentage' -TimeAggregation Average -Operator GreaterThan -Threshold 80 }
+            Criteria     = { New-AzMetricAlertRuleV2Criteria -MetricName 'MemoryPercentage' -TimeAggregation Average -Operator GreaterThan -Threshold 90 }
             Severity     = "Warning"
             WindowSize   = New-TimeSpan -Minutes 5
             Frequency    = New-TimeSpan -Minutes 5
