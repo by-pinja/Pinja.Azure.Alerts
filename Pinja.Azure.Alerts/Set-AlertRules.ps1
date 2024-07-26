@@ -140,21 +140,23 @@ function Set-AlertRules {
             
         }
         # Not too sure if this should be here since I have doubts about the above block working, but created just in case
-        if ($PSCmdlet.ShouldProcess($ResourceGroup, "Update-AzActionGroug - azure-logicapp-alerts") -and $ActionGroupLogicAppReceiver -ne $null ) {
-            if (Get-AzActionGroup -Name "azure-logicapp-alerts" -ResourceGroup $ResourceGroup) {
+        if ($PSCmdlet.ShouldProcess($ResourceGroup, "Update-AzActionGroug - az-logicapp") -and $ActionGroupLogicAppReceiver -ne $null ) {
+            if (Get-AzActionGroup -Name "az-logicapp" -ResourceGroup $ResourceGroup) {
                 $logicAppAlertRef = Update-AzActionGroup `
-                    -Name "azure-logicapp-alerts" `
+                    -Name "az-logicapp" `
                     -ResourceGroup $ResourceGroup `
-                    -ShortName "azure-logicapp-alerts" `
+                    -ShortName "az-logicapp" `
                     -LogicAppReceiver $ActionGroupLogicAppReceiver `
+                    -Location Global `
                     -Enabled:(!$DisableAlerts)
             }
             else {
                 $logicAppAlertRef = New-AzActionGroup `
-                    -Name "azure-logicapp-alerts" `
+                    -Name "az-logicapp" `
                     -ResourceGroup $ResourceGroup `
-                    -ShortName "azure-logicapp-alerts" `
+                    -ShortName "az-logicapp" `
                     -LogicAppReceiver $ActionGroupLogicAppReceiver `
+                    -Location Global `
                     -Enabled:(!$DisableAlerts)
             }
             
@@ -195,7 +197,7 @@ function Set-AlertRules {
                                 -Description $fullDescription `
                                 -Severity (SeverityAsInt $rule.Severity) `
                                 -Condition $criteria `
-                                -ActionGroupId @($alertRef.Id,$logicAppAlertRef) | Out-Null
+                                -ActionGroupId @($alertRef.Id,$logicAppAlertRef.Id) | Out-Null
 
                     } else {
                             Add-AzMetricAlertRuleV2 `
