@@ -20,6 +20,9 @@ function Set-AlertRules {
     .PARAMETER ActionGroupReceiver
     Parameter description
 
+    .PARAMETER ActionGroupLogicAppReceiver
+    Separate Logic App receiver parameter since AzActionGroupLogicAppReceiverObject has distinctly different return values on creation
+
     .PARAMETER DisableAlerts
     Parameter description
 
@@ -36,6 +39,7 @@ function Set-AlertRules {
         [PsCustomObject[]][Parameter(Mandatory, ValueFromPipeline)]$AlertRules,
         [PsCustomObject[]][Parameter()]$OverWrites = @(),
         [Parameter(Mandatory)]$ActionGroupReceiver,
+        [Parameter()]$ActionGroupLogicAppReceiver,
         [switch][Parameter()]$DisableAlerts
     )
 
@@ -115,6 +119,7 @@ function Set-AlertRules {
         }
 
 
+        # Has this ever worked with the Update-AzActionGroug typo?
         if ($PSCmdlet.ShouldProcess($ResourceGroup, "Update-AzActionGroug - azure-alerts")) {
             if (Get-AzActionGroup -Name "azure-alerts" -ResourceGroup $ResourceGroup) {
                 $alertRef = Update-AzActionGroup `
@@ -130,6 +135,26 @@ function Set-AlertRules {
                     -ResourceGroup $ResourceGroup `
                     -ShortName "azure-alerts" `
                     -WebhookReceiver $ActionGroupReceiver `
+                    -Enabled:(!$DisableAlerts)
+            }
+            
+        }
+        # Not too sure if this should be here since I have doubts about the above block working, but created just in case
+        if ($PSCmdlet.ShouldProcess($ResourceGroup, "Update-AzActionGroug - azure-logicapp-alerts") -and $ActionGroupLogicAppReceiver -ne $null ) {
+            if (Get-AzActionGroup -Name "azure-logicapp-alerts" -ResourceGroup $ResourceGroup) {
+                $logicAppAlertRef = Update-AzActionGroup `
+                    -Name "azure-logicapp-alerts" `
+                    -ResourceGroup $ResourceGroup `
+                    -ShortName "azure-logicapp-alerts" `
+                    -LogicAppReceiver $ActionGroupLogicAppReceiver `
+                    -Enabled:(!$DisableAlerts)
+            }
+            else {
+                $logicAppAlertRef = New-AzActionGroup `
+                    -Name "azure-logicapp-alerts" `
+                    -ResourceGroup $ResourceGroup `
+                    -ShortName "azure-logicapp-alerts" `
+                    -LogicAppReceiver $ActionGroupLogicAppReceiver `
                     -Enabled:(!$DisableAlerts)
             }
             
@@ -158,18 +183,34 @@ function Set-AlertRules {
                 $criteria = Invoke-Command -ScriptBlock $rule.Criteria -InputObject $resource 3>$null
 
                 if ($PSCmdlet.ShouldProcess($resource.Id, $fullName)) {
-                    Add-AzMetricAlertRuleV2 `
-                        -Name $fullName `
-                        -ResourceGroupName $ResourceGroup `
-                        -WindowSize $rule.WindowSize `
-                        -Frequency $rule.Frequency `
-                        -TargetResourceScope $resource.ResourceId `
-                        -TargetResourceType $resource.ResourceType `
-                        -TargetResourceRegion $resource.Location `
-                        -Description $fullDescription `
-                        -Severity (SeverityAsInt $rule.Severity) `
-                        -Condition $criteria `
-                        -ActionGroupId $alertRef.Id | Out-Null
+                    if ($ActionGroupLogicAppReceiver -ne $null ) {
+                            Add-AzMetricAlertRuleV2 `
+                                -Name $fullName `
+                                -ResourceGroupName $ResourceGroup `
+                                -WindowSize $rule.WindowSize `
+                                -Frequency $rule.Frequency `
+                                -TargetResourceScope $resource.ResourceId `
+                                -TargetResourceType $resource.ResourceType `
+                                -TargetResourceRegion $resource.Location `
+                                -Description $fullDescription `
+                                -Severity (SeverityAsInt $rule.Severity) `
+                                -Condition $criteria `
+                                -ActionGroupId @($alertRef.Id,$logicAppAlertRef) | Out-Null
+
+                    } else {
+                            Add-AzMetricAlertRuleV2 `
+                                -Name $fullName `
+                                -ResourceGroupName $ResourceGroup `
+                                -WindowSize $rule.WindowSize `
+                                -Frequency $rule.Frequency `
+                                -TargetResourceScope $resource.ResourceId `
+                                -TargetResourceType $resource.ResourceType `
+                                -TargetResourceRegion $resource.Location `
+                                -Description $fullDescription `
+                                -Severity (SeverityAsInt $rule.Severity) `
+                                -Condition $criteria `
+                                -ActionGroupId $alertRef.Id | Out-Null
+                    }
                 }
 
                 [PsCustomObject]@{
