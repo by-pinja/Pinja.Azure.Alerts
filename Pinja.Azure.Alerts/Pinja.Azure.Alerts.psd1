@@ -70,7 +70,7 @@ Description = 'Powershell module to simplify getting good default alerts for all
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = 'Get-DefaultAlertRules', 'New-AlertRule', 'New-AlertRuleOverwrite', 
-               'Set-AlertRules'
+               'Set-AlertRules', 'Set-AlertRulesLogicAppReceiver'
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = @()
