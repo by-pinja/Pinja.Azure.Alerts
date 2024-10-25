@@ -5,11 +5,9 @@ on:
       - '*' 
 jobs:
   build:
-    # Job name is Greeting
     name: Publish wiki
-    # This job runs on Linux
     runs-on: ubuntu-latest
-    container: mcr.microsoft.com/powershell:7.2.1-ubuntu-18.04
+    container: mcr.microsoft.com/powershell:7.4-ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v2
