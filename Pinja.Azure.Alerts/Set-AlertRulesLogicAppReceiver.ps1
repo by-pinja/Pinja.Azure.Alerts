@@ -116,7 +116,7 @@ function Set-AlertRulesLogicAppReceiver {
 
 
         if ($PSCmdlet.ShouldProcess($ResourceGroup, "Update-AzActionGroug - azure-alerts")) {
-            if (Get-AzActionGroup -Name "azure-alerts" -ResourceGroup $ResourceGroup) {
+            if (Get-AzActionGroup -Name "azure-alerts" -ResourceGroup $ResourceGroup -ErrorAction SilentlyContinue) {
                 $alertRef = Update-AzActionGroup `
                     -Name "azure-alerts" `
                     -ResourceGroup $ResourceGroup `
