@@ -12,13 +12,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Generate default alert rule documentation
-        run: ./misc/GenerateDefaultAlertDocMd.ps1 -OutPath ./wiki/default-alert-rules.md
-        shell: pwsh
+      # - name: Generate default alert rule documentation
+      #   run: ./misc/GenerateDefaultAlertDocMd.ps1 -OutPath ./wiki/default-alert-rules.md
+      #   shell: pwsh
 
-      - name: Generate documentation
-        run: ./misc/GenerateModuleDocumentation.ps1 -OutPath ./wiki/
-        shell: pwsh
+      # - name: Generate documentation
+      #   run: ./misc/GenerateModuleDocumentation.ps1 -OutPath ./wiki/
+      #   shell: pwsh
 
       # - name: Upload documentation to wiki
       #   uses: docker://decathlon/wiki-page-creator-action:2.0.1
@@ -36,7 +36,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: '6.0'
+          dotnet-version: '8.0'
 
       - name: Publish to PS gallery
         env:
