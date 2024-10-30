@@ -122,7 +122,6 @@ function Set-AlertRulesLogicAppReceiver {
                     -ResourceGroup $ResourceGroup `
                     -ShortName "azure-alerts" `
                     -LogicAppReceiver $ActionGroupLogicAppReceiver `
-                    -Location Global `
                     -Enabled:(!$DisableAlerts)
             }
             else {
@@ -134,7 +133,6 @@ function Set-AlertRulesLogicAppReceiver {
                     -Location Global `
                     -Enabled:(!$DisableAlerts)
             }
-            
         }
     }
 
